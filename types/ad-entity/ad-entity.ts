@@ -13,10 +13,11 @@ export interface SimpleAdEntity {
 }
 
 export interface AdEntity extends SimpleAdEntity {
-    image: string,
-    title: string,
-    address: string,
-    salaryMin: number,
-    salaryMax: number,
-    technology: string
+    name: string;
+    image: string;
+    title: string;
+    address: string;
+    salaryMin: number;
+    salaryMax: number;
+    technology: string;
 }
