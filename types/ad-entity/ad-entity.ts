@@ -8,11 +8,9 @@ export interface NewAdEntitiy extends Omit<AdEntity, 'id'> {
 //refund item
 export interface SimpleAdEntity {
     id: string;
+    creatorId: string;
     lat: number;
     lon: number;
-}
-
-export interface AdEntity extends SimpleAdEntity {
     name: string;
     image: string;
     title: string;
@@ -20,4 +18,9 @@ export interface AdEntity extends SimpleAdEntity {
     salaryMin: number;
     salaryMax: number;
     technology: string;
+    email: string;
+}
+
+export interface AdEntity extends SimpleAdEntity {
+    description: string;
 }
