@@ -1,7 +1,7 @@
 export * from './ad-entity'
 
-export interface NewAdEntitiy extends Omit<AdEntity, 'id'> {
-    id?: string
+export interface NewAdEntity extends Omit<AdEntity, 'id'> {
+    id?: string;
 }
 
 

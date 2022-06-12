@@ -1,9 +1,10 @@
-import {AdEntity} from "../types";
+import {AdEntity, NewAdEntity} from "../types";
 import {ValidationError} from "../utils/errors";
+import {pool} from "../utils/db";
+import {FieldPacket} from "mysql2";
 
-interface NewAdEntity extends Omit<AdEntity, 'id'> {
-    id?: string;
-}
+
+type AdRecordResults = [AdEntity[], FieldPacket[]];
 
 export class AdRecord implements AdEntity {
     id: string;
@@ -35,42 +36,50 @@ export class AdRecord implements AdEntity {
         this.salaryMin = obj.salaryMin;
         this.technology = obj.technology;
         this.title = obj.title;
-
+        this.id = obj.id;
 
 
     }
+
     private VALIDATION = (obj: NewAdEntity) => {
-        if (obj.salaryMax > 9999999 || obj.salaryMin < 0 || obj.salaryMax < 0 || obj.salaryMin > 9999999){
+        if (obj.salaryMax > 9999999 || obj.salaryMin < 0 || obj.salaryMax < 0 || obj.salaryMin > 9999999) {
             throw new ValidationError('the price cannot be less than 0 or more than 9999999')
         }
-        if (!obj.creatorId || obj.creatorId.length !== 36){
+        if (!obj.creatorId || obj.creatorId.length !== 36) {
             console.log(obj.creatorId)
             throw new ValidationError('creator id cannot be blank')
         }
-        if (!obj.name || obj.name.length > 30){
+        if (!obj.name || obj.name.length > 30) {
             throw new ValidationError("Company name cannot be blank or exceed 30 characters")
         }
-        if (!obj.address || obj.address.length > 100){
+        if (!obj.address || obj.address.length > 100) {
             throw new ValidationError("Address cannot be blank or exceed 100 characters")
         }
-        if (!obj.title || obj.title.length > 50 || obj.title.length < 3){
+        if (!obj.title || obj.title.length > 50 || obj.title.length < 3) {
             throw new ValidationError("Ad title cannot be blank or exceed 50 characters")
         }
-        if (!obj.email || obj.email.length > 100){
+        if (!obj.email || obj.email.length > 100) {
             throw new ValidationError("Company name cannot be blank or exceed 100 characters")
         }
-        if (!obj.technology || obj.technology.length > 100){
+        if (!obj.technology || obj.technology.length > 100) {
             throw new ValidationError("Technology cannot be blank or exceed 100 characters")
         }
-        if (!obj.email || obj.email.length > 100){
+        if (!obj.email || obj.email.length > 100) {
             throw new ValidationError("Company name cannot be blank or exceed 100 characters")
         }
-        if (!obj.description || obj.description.length > 1000){
+        if (!obj.description || obj.description.length > 1000) {
             throw new ValidationError("Description cannot be blank or exceed 1000 characters")
         }
         if (typeof obj.lat !== 'number' || typeof obj.lon !== 'number') {
             throw new ValidationError('The ad cannot be located.');
         }
+    }
+
+    static async getOne(adId: string): Promise<AdEntity> {
+        const [results] = await pool.execute("SELECT * FROM `ads` WHERE `id` = :id", {
+            id: adId,
+        }) as AdRecordResults;
+        return results.length === 0 ? null : new AdRecord(results[0]);
     }
 
 }
