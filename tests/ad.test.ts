@@ -1,5 +1,6 @@
 import {pool} from "../utils/db";
 import {AdRecord} from "../records/ad.record";
+import {AdEntity} from "../types";
 
 
 const defaultObj = {
@@ -22,7 +23,7 @@ afterAll(async () => {
     await pool.end()
 })
 
-test('AdRecord record returns data from database for one entry', async () => {
+test('AdRecord.getOne record returns data from database for one entry', async () => {
 
     const ad = await AdRecord.getOne('123456789012345678901234567890123451');
 
@@ -44,8 +45,37 @@ test('AdRecord record returns data from database for one entry', async () => {
 
 })
 
-test('AdRecord return null from database for unexisting entry', async () => {
+test('AdRecord.getOne return null from database for unexisting entry', async () => {
     const ad = await AdRecord.getOne('***');
     expect(ad).toBeNull();
 })
 
+test('AdRecord.findAll record returns array of found entries', async () => {
+
+    const ads = await AdRecord.findAll('');
+
+    expect(ads).not.toEqual([]);
+    expect(ads[0]).toBeDefined();
+})
+
+test('AdRecord.findAll record returns array of found entries when searching for "js"', async () => {
+
+    const ads = await AdRecord.findAll("js");
+
+    expect(ads).not.toEqual([]);
+    expect(ads[0]).toBeDefined();
+})
+
+test('AdRecord.findAll record returns empty array when searching for something that does not exsist', async () => {
+
+    const ads = await AdRecord.findAll("bhdcasdds---");
+
+    expect(ads).toEqual([]);
+})
+
+test('AdRecord.findAll record returns smaller amount of data.', async () => {
+
+    const ads = await AdRecord.findAll("katowice");
+
+    expect((ads[0] as AdEntity).description).toBeUndefined()
+})
