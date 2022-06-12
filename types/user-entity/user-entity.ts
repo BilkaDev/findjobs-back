@@ -6,11 +6,13 @@ export interface NewUserEntity extends Omit<UserEntity, 'id'> {
 
 
 //refund item
-export interface UserEntity {
+export interface UserEntity extends SimpleUserEntity{
+    password: string;
+}
+export interface SimpleUserEntity {
     id: string;
     name: string;
     email: string;
-    password: string;
 }
 
 
