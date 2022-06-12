@@ -99,3 +99,32 @@ test('AdRecord.insert inserts data to database', async () => {
     expect(foundAd).toBeDefined();
     expect(foundAd.id).toEqual(ad.id);
 });
+
+test('AdRecord.update returns update ad.', async () => {
+
+    const ad = await AdRecord.getOne("123456789012345678901234567890123451");
+    const editAd = new AdRecord({
+        ...ad,
+        name: "new name company",
+    });
+    await editAd.update();
+    const result = await AdRecord.getOne("123456789012345678901234567890123451");
+
+    expect(result.name).toBe('new name company');
+
+});
+
+test('AdRecord.delete delete ad.', async () => {
+
+    const ad = new AdRecord(defaultObj);
+    await ad.insert();
+
+    await ad.delete();
+    const result = await AdRecord.getOne(ad.id);
+
+    expect(result).toBeNull();
+
+});
+
+
+

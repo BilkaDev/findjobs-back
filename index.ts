@@ -15,9 +15,9 @@ app.use(rateLimit({
 }))
 
 
-
-// LAST_RESOLUTION
-
+// job because with ad name there may be a problem with the additive adBlock in browser.
+app.use('/job, adRouter')
+app.use('/user, userRouter')
 
 
 

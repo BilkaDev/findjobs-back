@@ -5,7 +5,7 @@ import {pool} from "../utils/db";
 import {FieldPacket} from "mysql2";
 
 
-type AdRecordResults = [AdEntity[], FieldPacket[]];
+type AdRecordResults = [AdRecord[], FieldPacket[]];
 
 export class AdRecord implements AdEntity {
     id: string;
@@ -76,7 +76,7 @@ export class AdRecord implements AdEntity {
         }
     };
 
-    static async getOne(adId: string): Promise<AdEntity> {
+    static async getOne(adId: string): Promise<AdRecord> {
         const [results] = await pool.execute("SELECT * FROM `ads` WHERE `id` = :id", {
             id: adId,
         }) as AdRecordResults;
@@ -126,10 +126,17 @@ export class AdRecord implements AdEntity {
         } else {
             throw new Error('Cannot insert something that  is already inserted');
         }
-        console.log(this);
 
         await pool.execute("INSERT INTO `findjobs`.`ads`(`id`, `description`, `email`, `technology`, `address`, `title`, `image`, `name`, `creatorId`, `salaryMin`, `salaryMax`, `lat`, `lon`) VALUES (:id,:description,:email,:technology,:address,:title,:image,:name,:creatorId,:salaryMin,:salaryMax,:lat,:lon)", this);
     }
 
+    async update(): Promise<void> {
+        await pool.execute("UPDATE `findjobs`.`ads` SET `description` = :description,`email`=:email,`technology`= :technology,`address`=:address,`title`=:title,`name`=:name,`salaryMin`=:salaryMin,`salaryMax`=:salaryMax,`lat`=:lat,`lon`=:lon WHERE  `id`=:id", this);
+    }
 
+    async delete(): Promise<void> {
+        await pool.execute("DELETE FROM `findjobs`.`ads` where `id` = :id", {
+            id: this.id,
+        });
+    }
 }
