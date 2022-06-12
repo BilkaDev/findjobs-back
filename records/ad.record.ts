@@ -53,7 +53,7 @@ export class AdRecord implements AdEntity {
         if (!obj.address || obj.address.length > 100){
             throw new ValidationError("Address cannot be blank or exceed 100 characters")
         }
-        if (!obj.title || obj.title.length > 50){
+        if (!obj.title || obj.title.length > 50 || obj.title.length < 3){
             throw new ValidationError("Ad title cannot be blank or exceed 50 characters")
         }
         if (!obj.email || obj.email.length > 100){
