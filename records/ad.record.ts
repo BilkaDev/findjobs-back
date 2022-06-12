@@ -60,13 +60,10 @@ export class AdRecord implements AdEntity {
             throw new ValidationError("Ad title cannot be blank or exceed 50 characters");
         }
         if (!obj.email || obj.email.length > 100) {
-            throw new ValidationError("Company name cannot be blank or exceed 100 characters");
+            throw new ValidationError("E-mail cannot be blank or exceed 100 characters");
         }
         if (!obj.technology || obj.technology.length > 100) {
             throw new ValidationError("Technology cannot be blank or exceed 100 characters");
-        }
-        if (!obj.email || obj.email.length > 100) {
-            throw new ValidationError("Company name cannot be blank or exceed 100 characters");
         }
         if (!obj.description || obj.description.length > 1000) {
             throw new ValidationError("Description cannot be blank or exceed 1000 characters");

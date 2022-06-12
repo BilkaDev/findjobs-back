@@ -119,7 +119,7 @@ test('validate invalid email', () => {
     expect(() => new AdRecord({
         ...defaultObj,
         email: undefined,
-    })).toThrow("Company name cannot be blank or exceed 100 characters")
+    })).toThrow("E-mail cannot be blank or exceed 100 characters")
     expect(() => new AdRecord({
         ...defaultObj,
         email: '123456789012345678901234567890112345678901234567890123456789011234567890123456789012345678901123456789012345678901234567890112345678901234567890123456789011234567890123456789012345678901',
