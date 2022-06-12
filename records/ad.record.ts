@@ -1,3 +1,4 @@
+import {v4 as uuid} from "uuid";
 import {AdEntity, NewAdEntity, SimpleAdEntity} from "../types";
 import {ValidationError} from "../utils/errors";
 import {pool} from "../utils/db";
@@ -43,37 +44,37 @@ export class AdRecord implements AdEntity {
 
     private VALIDATION = (obj: NewAdEntity) => {
         if (obj.salaryMax > 9999999 || obj.salaryMin < 0 || obj.salaryMax < 0 || obj.salaryMin > 9999999) {
-            throw new ValidationError('the price cannot be less than 0 or more than 9999999')
+            throw new ValidationError('the price cannot be less than 0 or more than 9999999');
         }
         if (!obj.creatorId || obj.creatorId.length !== 36) {
-            console.log(obj.creatorId)
-            throw new ValidationError('creator id cannot be blank')
+            console.log(obj.creatorId);
+            throw new ValidationError('creator id cannot be blank');
         }
         if (!obj.name || obj.name.length > 30) {
-            throw new ValidationError("Company name cannot be blank or exceed 30 characters")
+            throw new ValidationError("Company name cannot be blank or exceed 30 characters");
         }
         if (!obj.address || obj.address.length > 100) {
-            throw new ValidationError("Address cannot be blank or exceed 100 characters")
+            throw new ValidationError("Address cannot be blank or exceed 100 characters");
         }
         if (!obj.title || obj.title.length > 50 || obj.title.length < 3) {
-            throw new ValidationError("Ad title cannot be blank or exceed 50 characters")
+            throw new ValidationError("Ad title cannot be blank or exceed 50 characters");
         }
         if (!obj.email || obj.email.length > 100) {
-            throw new ValidationError("Company name cannot be blank or exceed 100 characters")
+            throw new ValidationError("Company name cannot be blank or exceed 100 characters");
         }
         if (!obj.technology || obj.technology.length > 100) {
-            throw new ValidationError("Technology cannot be blank or exceed 100 characters")
+            throw new ValidationError("Technology cannot be blank or exceed 100 characters");
         }
         if (!obj.email || obj.email.length > 100) {
-            throw new ValidationError("Company name cannot be blank or exceed 100 characters")
+            throw new ValidationError("Company name cannot be blank or exceed 100 characters");
         }
         if (!obj.description || obj.description.length > 1000) {
-            throw new ValidationError("Description cannot be blank or exceed 1000 characters")
+            throw new ValidationError("Description cannot be blank or exceed 1000 characters");
         }
         if (typeof obj.lat !== 'number' || typeof obj.lon !== 'number') {
             throw new ValidationError('The ad cannot be located.');
         }
-    }
+    };
 
     static async getOne(adId: string): Promise<AdEntity> {
         const [results] = await pool.execute("SELECT * FROM `ads` WHERE `id` = :id", {
@@ -101,7 +102,7 @@ export class AdRecord implements AdEntity {
                 technology,
                 title,
                 id,
-            } = result
+            } = result;
             return {
                 address,
                 creatorId,
@@ -115,8 +116,19 @@ export class AdRecord implements AdEntity {
                 technology,
                 title,
                 id,
-            }
+            };
         });
+    }
+
+    async insert(): Promise<void> {
+        if (!this.id) {
+            this.id = uuid();
+        } else {
+            throw new Error('Cannot insert something that  is already inserted');
+        }
+        console.log(this);
+
+        await pool.execute("INSERT INTO `findjobs`.`ads`(`id`, `description`, `email`, `technology`, `address`, `title`, `image`, `name`, `creatorId`, `salaryMin`, `salaryMax`, `lat`, `lon`) VALUES (:id,:description,:email,:technology,:address,:title,:image,:name,:creatorId,:salaryMin,:salaryMax,:lat,:lon)", this);
     }
 
 
