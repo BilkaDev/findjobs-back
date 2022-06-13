@@ -50,11 +50,11 @@ adRouter.get('/', async (req, res) => {
         const {aId} = req.params;
         const body = req.body;
         const ad = await AdRecord.getOne(aId);
-        if (ad.id !== body.id) {
-            throw new HtmlError('id must be provided.', 400);
-        }
         if (ad === null) {
             throw new HtmlError('Could not find a ad for the provided id.', 404);
+        }
+        if (ad.id !== body.id) {
+            throw new HtmlError('id must be provided.', 400);
         }
         const updateAd = new AdRecord({...body});
         await updateAd.update();
