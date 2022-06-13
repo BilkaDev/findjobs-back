@@ -49,6 +49,29 @@ test('AdRecord.getOne return null from database for unexisting entry', async () 
     const ad = await AdRecord.getOne('***');
     expect(ad).toBeNull();
 });
+test('AdRecord.getUserAds record returns data from database for one entry', async () => {
+
+    const userAds = await AdRecord.getUserAds('123456789012345678901234567890123456');
+
+    expect(userAds[0]).toBeDefined();
+    expect(userAds[0].id).toBe('123456789012345678901234567890123451');
+    expect(userAds[0].name).toBe('phantom js');
+    expect(userAds[0].lat).toBe(11.222222);
+    expect(userAds[0].lon).toBe(12.1231312);
+    expect(userAds[0].creatorId).toBe('123456789012345678901234567890123456');
+    expect(userAds[0].image).toBe('https://cdn.pixabay.com/photo/2016/12/27/13/10/logo-1933884_960_720.png');
+    expect(userAds[0].title).toBe('search junior');
+    expect(userAds[0].address).toBe('katowice, mariacka 10');
+    expect(userAds[0].salaryMin).toBe(11.0);
+    expect(userAds[0].salaryMax).toBe(100.0);
+    expect(userAds[0].technology).toBe('js,react');
+    expect(userAds[0].email).toBe('company@recrut.com');
+});
+
+test('AdRecord.getUserAds returnempty array when searching for something that does not exsist', async () => {
+    const userAds = await AdRecord.getUserAds('***');
+    expect(userAds).toEqual([]);
+});
 
 test('AdRecord.findAll record returns array of found entries', async () => {
 

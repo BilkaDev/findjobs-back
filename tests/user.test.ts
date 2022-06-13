@@ -42,3 +42,5 @@ test('UserRecord.singup inserts data to database', async () => {
     expect(foundUser).toBeDefined();
     expect(foundUser.id).toEqual(user.id);
 });
+
+

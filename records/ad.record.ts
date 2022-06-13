@@ -80,6 +80,43 @@ export class AdRecord implements AdEntity {
         return results.length === 0 ? null : new AdRecord(results[0]);
     }
 
+    static async getUserAds(userId: string): Promise<SimpleAdEntity[]> {
+        const [results] = await pool.execute("SELECT * FROM `ads` WHERE `creatorId` = :userId", {
+            userId,
+        }) as AdRecordResults;
+
+        return results.map(result => {
+            const {
+                address,
+                creatorId,
+                email,
+                image,
+                lat,
+                lon,
+                name,
+                salaryMax,
+                salaryMin,
+                technology,
+                title,
+                id,
+            } = result;
+            return {
+                address,
+                creatorId,
+                email,
+                image,
+                lat,
+                lon,
+                name,
+                salaryMax,
+                salaryMin,
+                technology,
+                title,
+                id,
+            };
+        });
+    }
+
     static async findAll(name: string): Promise<SimpleAdEntity[]> {
         const [results] = await pool.execute("SELECT * FROM `ads` WHERE `name` LIKE :search OR `technology` LIKE :search OR `title` LIKE :search OR `address` LIKE :search", {
             search: `%${name}%`,
@@ -136,4 +173,6 @@ export class AdRecord implements AdEntity {
             id: this.id,
         });
     }
+
+
 }
