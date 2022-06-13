@@ -3,6 +3,10 @@ export * from './user-entity';
 export interface NewUserEntity extends Omit<UserEntity, 'id'> {
     id?: string;
 }
+export interface LoginUserEntity extends Omit<UserEntity, 'id'|'name'> {
+    id?: string;
+    name?: string;
+}
 
 
 //refund item

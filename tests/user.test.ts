@@ -5,8 +5,7 @@ const defaultObj = {
     name: "Mateo Woj",
     email: "example@example.com",
     password: "123456",
-
-}
+};
 
 
 test('UserRecord.getUser record returns data from database for one entry', async () => {
@@ -37,10 +36,42 @@ test('UserRecord.singup inserts data to database', async () => {
     const user = new UserRecord(defaultObj);
     await user.singup();
     const foundUser = await UserRecord.getUser(user.id);
-
-
     expect(foundUser).toBeDefined();
     expect(foundUser.id).toEqual(user.id);
 });
+
+test('UserRecord.login returns id,email,name and password not defined', async () => {
+    const user = new UserRecord({
+        email: "example@example.com",
+        password: "123456",
+        name: "login"
+    });
+
+    const login = await user.login();
+    console.log(user);
+    expect(login.id).toBeDefined();
+    expect(login.email).toBe("example@example.com");
+    expect(login.name).toBeDefined();
+});
+
+test('UserRecord.login validate email', async () => {
+    const user = new UserRecord({
+        email: "esfsfe@examsdfsafple.com",
+        password: "123456",
+        name: "login"
+    });
+
+    await expect(async () => await user.login()).rejects.toThrow("Invalid credentials, could not login");
+});
+test('UserRecord.login validate password', async () => {
+    const user = new UserRecord({
+        email: "esfsfe@examsdfsafple.com",
+        password: "asdfgasdf",
+        name: "login"
+    });
+
+    await expect(async () => await user.login()).rejects.toThrow("Invalid credentials, could not login");
+});
+
 
 

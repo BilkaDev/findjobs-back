@@ -22,7 +22,7 @@ test('validate invalid name', () => {
     expect(() => new UserRecord({
         ...defaultObj,
         name: undefined,
-    })).toThrow("Name cannot be blank or exceed 30 characters")
+    })).toThrow("Name cannot be blank or exceed 30 characters");
     expect(() => new UserRecord({
         ...defaultObj,
         name: '1234567890123456789012345678901aaaaaaaaaaaaaa',
