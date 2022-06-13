@@ -2,6 +2,9 @@ import express, { json } from 'express';
 import cors from 'cors';
 import {handleError} from "./utils/errors";
 import rateLimit from "express-rate-limit";
+import 'express-async-errors';
+import {adRouter} from "./routers/ad.router";
+import {userRouter} from "./routers/user.router";
 
 const app = express();
 
@@ -16,8 +19,8 @@ app.use(rateLimit({
 
 
 // job because with ad name there may be a problem with the additive adBlock in browser.
-app.use('/job, adRouter')
-app.use('/user, userRouter')
+app.use('/job', adRouter)
+app.use('/user', userRouter)
 
 
 
