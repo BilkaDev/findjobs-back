@@ -24,9 +24,9 @@ adRouter.get('/', async (req, res) => {
 
     .get('/search/:name', async (req, res) => {
         const {name} = req.params;
-        const ad = await AdRecord.findAll(name);
+        const ads = await AdRecord.findAll(name);
         res.json({
-            ad,
+            ads,
         });
     })
 
