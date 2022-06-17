@@ -47,7 +47,6 @@ export class AdRecord implements AdEntity {
             throw new ValidationError('the price cannot be less than 0 or more than 9999999');
         }
         if (!obj.creatorId || obj.creatorId.length !== 36) {
-            console.log(obj.creatorId);
             throw new ValidationError('creator id cannot be blank');
         }
         if (!obj.name || obj.name.length > 30) {

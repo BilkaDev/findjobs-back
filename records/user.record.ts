@@ -1,7 +1,8 @@
 import {HttpError, ValidationError} from "../utils/errors";
 import {FieldPacket} from "mysql2";
 import bcrypt from "bcrypt";
-import {LoginUserEntity, NewUserEntity, SimpleUserEntity, UserEntity} from "../types";
+import jwt from "jsonwebtoken";
+import {LoginUserEntity, NewUserEntity, SimpleUserEntity, UserEntity, UserLoginRes} from "../types";
 import {pool} from "../utils/db";
 import {v4 as uuid} from "uuid";
 
@@ -13,7 +14,7 @@ export class UserRecord implements UserEntity {
     email: string;
     password: string;
     name: string;
-    tokenId: string | null = null;
+    token: string | null = null;
 
     constructor(obj: (NewUserEntity | LoginUserEntity)) {
         this.email = obj.email;
@@ -54,7 +55,7 @@ export class UserRecord implements UserEntity {
 
     }
 
-    async singup(): Promise<void> {
+    async singup(): Promise<UserLoginRes> {
         this.VALIDATION(this);
         if (!this.id) {
             this.id = uuid();
@@ -70,21 +71,36 @@ export class UserRecord implements UserEntity {
 
 
         try {
-            this.password = await bcrypt.hash(this.password, 12,)
+            this.password = await bcrypt.hash(this.password, 12,);
         } catch (e) {
-            throw new HttpError('Could not create user, please try again',500)
+            throw new HttpError('Could not create user, please try again', 500);
         }
 
         try {
             await pool.execute("INSERT INTO `findjobs`.`users`(`id`,`name`, `email`, `password`) VALUES (:id,:name,:email,:password)", this);
 
         } catch (e) {
-            throw new HttpError('Creating a new user failed, please try again',500)
+            throw new HttpError('Creating a new user failed, please try again', 500);
 
         }
+        try {
+            this.token = jwt.sign({
+                userId: this.id,
+                email: this.email,
+            }, 'LASDFSAF@#ADSVS@#$@!@#$24', {expiresIn: '1h'});
+
+        } catch (e) {
+            throw new HttpError('Creating a new user failed, please try again', 500);
+
+        }
+        return {
+            email: this.email,
+            name: this.name,
+            id: this.id,
+            token: this.token};
     }
 
-    async login(): Promise<SimpleUserEntity> {
+    async login(): Promise<UserLoginRes> {
         const [user] = await pool.execute("SELECT * FROM `users` WHERE `email` = :email ", {
             email: this.email,
         }) as userRecordResults;
@@ -94,10 +110,9 @@ export class UserRecord implements UserEntity {
 
         let isValidPassword;
         try {
-            isValidPassword = await bcrypt.compare(this.password, user[0].password)
-            console.log(isValidPassword);
+            isValidPassword = await bcrypt.compare(this.password, user[0].password);
         } catch (e) {
-            throw new HttpError('Could not log you in, please check your credentials and try again', 500)
+            throw new HttpError('Could not log you in, please check your credentials and try again', 500);
         }
 
 
@@ -107,7 +122,19 @@ export class UserRecord implements UserEntity {
 
         const {email, name, id} = user[0];
 
-        return {email, name, id};
+
+        try {
+            this.token = jwt.sign({
+                userId: user[0].id,
+                email: user[0].email
+            }, 'LASDFSAF@#ADSVS@#$@!@#$24', {expiresIn: '1h'});
+
+        } catch (e) {
+            throw new HttpError('logging in failed, please try again', 500);
+
+        }
+
+        return {email, name, id, token: this.token};
     }
 
 

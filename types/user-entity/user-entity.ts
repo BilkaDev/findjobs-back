@@ -12,11 +12,18 @@ export interface LoginUserEntity extends Omit<UserEntity, 'id'|'name'> {
 //refund item
 export interface UserEntity extends SimpleUserEntity{
     password: string;
+    token?: string | null;
 }
 export interface SimpleUserEntity {
     id: string;
     name: string;
     email: string;
+}
+export interface UserLoginRes {
+    id: string;
+    name: string;
+    email: string;
+    token: string;
 }
 
 

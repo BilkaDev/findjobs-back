@@ -17,8 +17,9 @@ userRouter
     })
     .post('/login', async (req, res) => {
         const {email, password} = req.body;
-        const user = new UserRecord({email, password} as LoginUserEntity);
-        const login = await user.login();
+        const user  = new UserRecord({email, password} as LoginUserEntity);
+        const login  = await user.login();
+
         res.json(
             login
         );
@@ -27,10 +28,10 @@ userRouter
     .post('/singup', async (req, res) => {
         const user = new UserRecord(req.body as NewUserEntity);
         await user.singup();
-        const {id, email, name} = user;
+        const {id, email, name, token} = user;
 
         res.status(201)
             .json({
-                user: {id, email, name}
+                user: {id, email, name, token}
             });
     });
