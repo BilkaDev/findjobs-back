@@ -1,6 +1,6 @@
 import {Router} from "express";
 import {AdRecord} from "../records/ad.record";
-import {HtmlError} from "../utils/errors";
+import {HttpError} from "../utils/errors";
 
 export const adRouter = Router();
 
@@ -14,7 +14,7 @@ adRouter.get('/', async (req, res) => {
         const {adId} = req.params;
         const ad = await AdRecord.getOne(adId);
         if (ad === null) {
-            throw new HtmlError('Could not find a ad for the provided id.', 404);
+            throw new HttpError('Could not find a ad for the provided id.', 404);
         }
 
         res.json({
@@ -51,10 +51,10 @@ adRouter.get('/', async (req, res) => {
         const body = req.body;
         const ad = await AdRecord.getOne(aId);
         if (ad === null) {
-            throw new HtmlError('Could not find a ad for the provided id.', 404);
+            throw new HttpError('Could not find a ad for the provided id.', 404);
         }
         if (ad.id !== body.id) {
-            throw new HtmlError('id must be provided.', 400);
+            throw new HttpError('id must be provided.', 400);
         }
         const updateAd = new AdRecord({...body});
         await updateAd.update();
@@ -66,7 +66,7 @@ adRouter.get('/', async (req, res) => {
     .delete('/:id', async (req, res) => {
         const ad = await AdRecord.getOne(req.params.id);
         if (!ad) {
-            throw new HtmlError('No such ad.', 404);
+            throw new HttpError('No such ad.', 404);
         }
 
         await ad.delete();

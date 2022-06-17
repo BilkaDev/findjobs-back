@@ -1,7 +1,7 @@
 import {Router} from "express";
 import {UserRecord} from "../records/user.record";
-import {HtmlError} from "../utils/errors";
-import {LoginUserEntity, NewUserEntity} from "../types/user-entity";
+import {HttpError} from "../utils/errors";
+import {LoginUserEntity, NewUserEntity} from "../types";
 
 export const userRouter = Router();
 
@@ -9,7 +9,7 @@ userRouter
     .get('/:id', async (req, res) => {
         const user = await UserRecord.getUser(req.params.id);
         if (!user) {
-            throw new HtmlError('Cannot find user.', 404);
+            throw new HttpError('Cannot find user.', 404);
         }
         res.json({
             user,

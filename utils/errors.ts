@@ -3,7 +3,7 @@ import {NextFunction, Request, Response} from "express";
 export class ValidationError extends Error {
 }
 
-export class HtmlError extends Error {
+export class HttpError extends Error {
     code: number;
 
     constructor(message: string, errorCode: number) {
@@ -14,7 +14,7 @@ export class HtmlError extends Error {
 
 export const handleError = (err: Error, req: Request, res: Response, next: NextFunction) => {
     console.log("----------------------------------------------------------\n\n", err);
-    if (err instanceof HtmlError) {
+    if (err instanceof HttpError) {
         res
             .status(err.code)
             .json({

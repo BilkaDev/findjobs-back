@@ -1,6 +1,7 @@
-import {ValidationError} from "../utils/errors";
+import {HttpError, ValidationError} from "../utils/errors";
 import {FieldPacket} from "mysql2";
-import {LoginUserEntity, NewUserEntity, SimpleUserEntity, UserEntity} from "../types/user-entity";
+import bcrypt from "bcrypt";
+import {LoginUserEntity, NewUserEntity, SimpleUserEntity, UserEntity} from "../types";
 import {pool} from "../utils/db";
 import {v4 as uuid} from "uuid";
 
@@ -12,6 +13,8 @@ export class UserRecord implements UserEntity {
     email: string;
     password: string;
     name: string;
+    tokenId: string | null = null;
+
     constructor(obj: (NewUserEntity | LoginUserEntity)) {
         this.email = obj.email;
         this.name = obj.name;
@@ -65,7 +68,20 @@ export class UserRecord implements UserEntity {
             throw new ValidationError("User exists already, please login instead");
         }
 
-        await pool.execute("INSERT INTO `findjobs`.`users`(`id`,`name`, `email`, `password`) VALUES (:id,:name,:email,:password)", this);
+
+        try {
+            this.password = await bcrypt.hash(this.password, 12,)
+        } catch (e) {
+            throw new HttpError('Could not create user, please try again',500)
+        }
+
+        try {
+            await pool.execute("INSERT INTO `findjobs`.`users`(`id`,`name`, `email`, `password`) VALUES (:id,:name,:email,:password)", this);
+
+        } catch (e) {
+            throw new HttpError('Creating a new user failed, please try again',500)
+
+        }
     }
 
     async login(): Promise<SimpleUserEntity> {
@@ -75,7 +91,17 @@ export class UserRecord implements UserEntity {
         if (user.length === 0) {
             throw new ValidationError("Invalid credentials, could not login");
         }
-        if (user[0].password !== this.password) {
+
+        let isValidPassword;
+        try {
+            isValidPassword = await bcrypt.compare(this.password, user[0].password)
+            console.log(isValidPassword);
+        } catch (e) {
+            throw new HttpError('Could not log you in, please check your credentials and try again', 500)
+        }
+
+
+        if (!isValidPassword) {
             throw new ValidationError("Invalid credentials, could not login");
         }
 
