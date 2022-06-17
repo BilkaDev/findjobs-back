@@ -65,12 +65,11 @@ adRouter.get('/', async (req, res) => {
     })
     .delete('/:id', async (req, res) => {
         const ad = await AdRecord.getOne(req.params.id);
-
         if (!ad) {
             throw new HtmlError('No such ad.', 404);
         }
 
         await ad.delete();
-        res.end();
+        res.status(200).json({message: "Delete ad successfully"});
     });
 
