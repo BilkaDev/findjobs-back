@@ -45,7 +45,6 @@ adRouter.get('/', async (req, res) => {
     })
     .use(checkAuth)
     .post('/', fileUpload.single('image'), async (req: AuthReq, res) => {
-        console.log(req.body);
         const newAd = new AdRecord(
             {
                 ...req.body,

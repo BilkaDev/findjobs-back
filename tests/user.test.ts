@@ -48,7 +48,6 @@ test('UserRecord.login returns id,email,name and password not defined', async ()
     });
 
     const login = await user.login();
-    console.log(user);
     expect(login.id).toBeDefined();
     expect(login.email).toBe("example@example.com");
     expect(login.name).toBeDefined();

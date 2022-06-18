@@ -16,7 +16,6 @@ userRouter
         });
     })
     .post('/login', async (req, res) => {
-        console.log("adsfasdfsadfsdfsdf",req.body);
         const {email, password} = req.body;
         const user  = new UserRecord({email, password} as LoginUserEntity);
         const login  = await user.login();
