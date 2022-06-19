@@ -21,6 +21,7 @@ export class AdRecord implements AdEntity {
     salaryMin: number;
     technology: string;
     title: string;
+    date: Date;
 
     constructor(obj: NewAdEntity) {
         this.VALIDATION(obj);
@@ -98,6 +99,7 @@ export class AdRecord implements AdEntity {
                 technology,
                 title,
                 id,
+                date,
             } = result;
             return {
                 address,
@@ -112,12 +114,13 @@ export class AdRecord implements AdEntity {
                 technology,
                 title,
                 id,
+                date,
             };
         });
     }
 
     static async findAll(name: string): Promise<SimpleAdEntity[]> {
-        const [results] = await pool.execute("SELECT * FROM `ads` WHERE `name` LIKE :search OR `technology` LIKE :search OR `title` LIKE :search OR `address` LIKE :search", {
+        const [results] = await pool.execute("SELECT * FROM `ads` WHERE `name` LIKE :search OR `technology` LIKE :search OR `title` LIKE :search OR `address` LIKE :search ORDER BY `date` DESC", {
             search: `%${name}%`,
         }) as AdRecordResults;
 
@@ -135,6 +138,7 @@ export class AdRecord implements AdEntity {
                 technology,
                 title,
                 id,
+                date,
             } = result;
             return {
                 address,
@@ -149,6 +153,7 @@ export class AdRecord implements AdEntity {
                 technology,
                 title,
                 id,
+                date,
             };
         });
     }
@@ -159,8 +164,9 @@ export class AdRecord implements AdEntity {
         } else {
             throw new Error('Cannot insert something that  is already inserted');
         }
+        this.date = new Date();
 
-        await pool.execute("INSERT INTO `findjobs`.`ads`(`id`, `description`, `email`, `technology`, `address`, `title`, `image`, `name`, `creatorId`, `salaryMin`, `salaryMax`, `lat`, `lon`) VALUES (:id,:description,:email,:technology,:address,:title,:image,:name,:creatorId,:salaryMin,:salaryMax,:lat,:lon)", this);
+        await pool.execute("INSERT INTO `findjobs`.`ads`(`id`, `description`, `email`, `technology`, `address`, `title`, `image`, `name`, `creatorId`, `salaryMin`, `salaryMax`, `lat`, `lon`, `date`) VALUES (:id,:description,:email,:technology,:address,:title,:image,:name,:creatorId,:salaryMin,:salaryMax,:lat,:lon,:date)", this);
     }
 
     async update(): Promise<void> {

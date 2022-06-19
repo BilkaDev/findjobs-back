@@ -17,6 +17,7 @@ export interface SimpleAdEntity {
     salaryMax: number;
     technology: string;
     email: string;
+    date: Date;
 }
 
 export interface AdEntity extends SimpleAdEntity {
