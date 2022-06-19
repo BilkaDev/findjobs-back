@@ -26,7 +26,7 @@ const router = Router();
 // job because with ad name there may be a problem with the additive adBlock in browser.
 router.use('/job', adRouter);
 router.use('/user', userRouter);
-app.use('/api')
+app.use('/api', router)
 
 
 app.use(handleError);
