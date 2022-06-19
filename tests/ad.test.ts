@@ -3,7 +3,9 @@ import {AdRecord} from "../records/ad.record";
 import {AdEntity} from "../types";
 
 
-const defaultObj = {
+const defaultObj : AdEntity= {
+    date: new Date(),
+    id: "",
     creatorId: "123456789012345678901234567890123456",
     lat: 12.3456789,
     lon: 12.3456789,

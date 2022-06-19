@@ -1,6 +1,6 @@
 {
-  "name": "y",
-  "version": "0.1.0",
+  "name": "FindJobs Api",
+  "version": "1.0.0",
   "description": "Server for app FindJobs",
   "main": "index.js",
   "scripts": {
