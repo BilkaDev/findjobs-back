@@ -28,7 +28,7 @@ lib-cov
 coverage
 *.lcov
 
-# nyc test coverage
+# nyc ad-entity coverage
 .nyc_output
 
 # Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
@@ -141,6 +141,7 @@ dist
 
 # SvelteKit build / generate output
 .svelte-kit
-
 # End of https://www.toptal.com/developers/gitignore/api/node
 1
+uploads
+/config/conifg.ts
