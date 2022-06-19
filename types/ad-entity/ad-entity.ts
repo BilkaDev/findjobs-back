@@ -4,8 +4,6 @@ export interface NewAdEntity extends Omit<AdEntity, 'id'> {
     id?: string;
 }
 
-
-//refund item
 export interface SimpleAdEntity {
     id: string;
     creatorId: string;
