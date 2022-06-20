@@ -77,7 +77,7 @@ export class UserRecord implements UserEntity {
         }
 
         try {
-            await pool.execute("INSERT INTO `findjobs`.`users`(`id`,`name`, `email`, `password`) VALUES (:id,:name,:email,:password)", this);
+            await pool.execute("INSERT INTO `users`(`id`,`name`, `email`, `password`) VALUES (:id,:name,:email,:password)", this);
 
         } catch (e) {
             throw new HttpError('Creating a new user failed, please try again', 500);

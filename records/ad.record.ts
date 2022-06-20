@@ -166,15 +166,15 @@ export class AdRecord implements AdEntity {
         }
         this.date = new Date();
 
-        await pool.execute("INSERT INTO `findjobs`.`ads`(`id`, `description`, `email`, `technology`, `address`, `title`, `image`, `name`, `creatorId`, `salaryMin`, `salaryMax`, `lat`, `lon`, `date`) VALUES (:id,:description,:email,:technology,:address,:title,:image,:name,:creatorId,:salaryMin,:salaryMax,:lat,:lon,:date)", this);
+        await pool.execute("INSERT INTO `ads`(`id`, `description`, `email`, `technology`, `address`, `title`, `image`, `name`, `creatorId`, `salaryMin`, `salaryMax`, `lat`, `lon`, `date`) VALUES (:id,:description,:email,:technology,:address,:title,:image,:name,:creatorId,:salaryMin,:salaryMax,:lat,:lon,:date)", this);
     }
 
     async update(): Promise<void> {
-        await pool.execute("UPDATE `findjobs`.`ads` SET `description` = :description,`email`=:email,`technology`= :technology,`address`=:address,`title`=:title,`name`=:name,`salaryMin`=:salaryMin,`salaryMax`=:salaryMax,`lat`=:lat,`lon`=:lon WHERE  `id`=:id", this);
+        await pool.execute("UPDATE `ads` SET `description` = :description,`email`=:email,`technology`= :technology,`address`=:address,`title`=:title,`name`=:name,`salaryMin`=:salaryMin,`salaryMax`=:salaryMax,`lat`=:lat,`lon`=:lon WHERE  `id`=:id", this);
     }
 
     async delete(): Promise<void> {
-        await pool.execute("DELETE FROM `findjobs`.`ads` where `id` = :id", {
+        await pool.execute("DELETE FROM `ads` where `id` = :id", {
             id: this.id,
         });
     }
