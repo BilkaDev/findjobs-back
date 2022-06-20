@@ -15,7 +15,6 @@ app.use(cors({
 }));
 
 app.use(json({limit: '0.25mb'}));
-app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 app.use(rateLimit({
     windowMs: 5 * 60 * 1000,
@@ -23,6 +22,7 @@ app.use(rateLimit({
 }));
 
 const router = Router();
+router.use('/uploads/images', express.static(path.join('uploads', 'images')));
 // job because with ad name there may be a problem with the additive adBlock in browser.
 router.use('/job', adRouter);
 router.use('/user', userRouter);
