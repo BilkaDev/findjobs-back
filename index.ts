@@ -6,19 +6,20 @@ import 'express-async-errors';
 import {adRouter} from "./routers/ad.router";
 import {userRouter} from "./routers/user.router";
 import path from "path";
+import {config} from "./config/conifg";
 
 
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: config.corsOrigin,
 }));
 
 app.use(json({limit: '0.25mb'}));
 
 app.use(rateLimit({
     windowMs: 5 * 60 * 1000,
-    max: 100,
+    max: 200,
 }));
 
 const router = Router();
