@@ -93,7 +93,7 @@ adRouter.get('/', async (req, res) => {
         if (ad.creatorId !== req.userData.user.userId) {
             throw new ValidationError('You are not allowed to delete this ad.');
         }
-        const pathImage = path.join(__dirname, '..', ad.image);
+        const pathImage = path.join(path.dirname('__dirname'), ad.image);
         await ad.delete();
         await rm(pathImage);
         res.status(200).json({message: "Delete ad successfully"});
