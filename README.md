@@ -1,7 +1,8 @@
 
 # Findjobs - backend
 ## Application Description
-This is the server for the findjobs application.
+This is the server for the findjobs application. \
+The application is used to search and add jobs. \
 It is used for storing data and sending responses to the client.
 
 view online: https://findjobs.bilka.networkmanager.pl \
