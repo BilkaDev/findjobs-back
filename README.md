@@ -47,5 +47,5 @@ Open [http://localhost:3001](http://localhost:3001) to view it in the browser.
 
 
 ### `tsc` bulid the app.
-Builds the app for production to the `build` folder.\
+Builds the app for production to the `dist` folder.\
 Your app is ready to be deployed!
