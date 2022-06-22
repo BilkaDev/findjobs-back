@@ -5,7 +5,7 @@ This is the server for the findjobs application.
 It is used for storing data and sending responses to the client.
 
 view online: https://findjobs.bilka.networkmanager.pl \
-source code: (https://github.com/BilkaDev/findjobs-front)
+client source code: (https://github.com/BilkaDev/findjobs-front)
 
 ## Technology:
 node js - v16.15.1 \
